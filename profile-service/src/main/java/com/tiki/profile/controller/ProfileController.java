@@ -11,9 +11,12 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,24 +32,29 @@ public class ProfileController {
                 .build();
     }
 
-    @GetMapping("/profiles/my-profile")
+    @GetMapping("/my-profile")
     ApiResponse<ProfileResponse> getMyProfile() {
         return ApiResponse.<ProfileResponse>builder()
                 .result(profileService.getCurrentProfile())
                 .build();
     }
-    @PutMapping("/profiles/my-profile")
+    @PutMapping("/my-profile")
     ApiResponse<ProfileResponse> updateMyProfile(@RequestBody UpdateProfileRequest request) {
         return ApiResponse.<ProfileResponse>builder()
                 .result(profileService.updateProfile(request))
                 .build();
     }
 
-    @GetMapping("/profiles")
+    @GetMapping("/")
     ApiResponse<List<ProfileResponse>> getAllProfiles() {
         return ApiResponse.<List<ProfileResponse>>builder()
                 .result(profileService.getAllProfiles())
                 .build();
     }
-
+    @GetMapping("/me")
+    public List<String> getAuthorities(Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+    }
 }
