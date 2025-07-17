@@ -29,4 +29,16 @@ public enum ErrorCode {
     private final int code;
     private final HttpStatusCode statusCode;
     private final String message;
+
+    public int getCode() {
+        return code;
+    }
+
+    public HttpStatusCode getStatusCode() {
+        return statusCode;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

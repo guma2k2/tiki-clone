@@ -18,7 +18,6 @@ public class CustomAuthoritiesConverter implements Converter<Jwt, Collection<Gra
     private final String ROLES = "roles";
     @Override
     public Collection<GrantedAuthority> convert(Jwt jwt) {
-
         Map<String, Object> realmAccessMap = jwt.getClaim(REALM_ACCESS);
         Object roles = realmAccessMap.get(ROLES);
         if (roles instanceof List stringRoles) {

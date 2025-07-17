@@ -47,20 +47,6 @@ public class ProfileService {
 
     ErrorNormalizer errorNormalizer;
 
-    public ProfileResponse createProfile(ProfileCreationRequest request) {
-        Profile profile = Profile.builder()
-                .userId(request.userId())
-                .avatar(request.avatar())
-                .dob(request.dob())
-                .city(request.city())
-                .firstName(request.firstName())
-                .lastName(request.lastName())
-                .username(request.username())
-                .email(request.email())
-                .build();
-        return ProfileResponse.from(profileRepository.save(profile))    ;
-    }
-
     public ProfileResponse register(RegistrationRequest request) {
         try {
             TokenExchangeResponse token = identityClient.exchangeToken(TokenExchangeParam.builder()
@@ -90,28 +76,18 @@ public class ProfileService {
                     .lastName(request.lastName())
                     .email(request.email())
                     .dob(request.dob())
+                    .city("")
+                    .avatar("")
                     .build();
             profileRepository.save(profile);
             return ProfileResponse.from(profile);
         } catch (FeignException exception) {
             throw errorNormalizer.handleKeyCloakException(exception);
         }
-
-//        Profile profile = Profile.builder()
-//                .userId(request.userId())
-//                .avatar(request.avatar())
-//                .dob(request.dob())
-//                .city(request.city())
-//                .firstName(request.firstName())
-//                .lastName(request.lastName())
-//                .username(request.username())
-//                .email(request.email())
-//                .build();
-//        return ProfileResponse.from(profileRepository.save(profile))    ;
     }
 
     private String extractUserId(ResponseEntity<?> response) {
-        String location = response.getHeaders().get("Location").getFirst();
+        String location = response.getHeaders().get("Location").get(0);
         String[] splitedStr = location.split("/");
         return splitedStr[splitedStr.length - 1];
     }

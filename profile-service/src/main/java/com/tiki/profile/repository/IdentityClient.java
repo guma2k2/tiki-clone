@@ -20,6 +20,6 @@ public interface IdentityClient {
     TokenExchangeResponse exchangeToken(@QueryMap TokenExchangeParam param);
 
 
-    @PostMapping(value = "/admin/realms/devteria/users", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/admin/realms/tiki/users", consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<?> createUser(@RequestHeader("authorization") String token, @RequestBody UserCreationParam param);
 }
