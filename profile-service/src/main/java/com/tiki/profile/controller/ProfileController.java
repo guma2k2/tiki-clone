@@ -57,4 +57,6 @@ public class ProfileController {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
     }
+
+
 }
