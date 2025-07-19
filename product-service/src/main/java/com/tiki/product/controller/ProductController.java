@@ -1,6 +1,7 @@
 package com.tiki.product.controller;
 
 import com.tiki.product.dto.ApiResponse;
+import com.tiki.product.dto.request.AttributeRequest;
 import com.tiki.product.dto.request.ProductCreationRequest;
 import com.tiki.product.dto.request.ProductVariantCreateRequest;
 import com.tiki.product.service.ProductService;
@@ -38,6 +39,16 @@ public class ProductController {
         return ApiResponse.<Void>builder()
                 .code(1201)
                 .message("Product created")
+                .build();
+    }
+
+
+    @PostMapping("/attribute")
+    public ApiResponse<Void> createAttribute(@RequestBody @Valid AttributeRequest request) {
+        productService.createAttribute(request);
+        return ApiResponse.<Void>builder()
+                .code(1201)
+                .message("Attribute created")
                 .build();
     }
 

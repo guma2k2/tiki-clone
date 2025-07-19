@@ -1,6 +1,7 @@
 package com.tiki.product.service;
 
 
+import com.tiki.product.dto.request.AttributeRequest;
 import com.tiki.product.dto.request.ProductCreationRequest;
 import com.tiki.product.dto.request.ProductVariantCreateRequest;
 import com.tiki.product.entity.*;
@@ -101,5 +102,14 @@ public class ProductService {
         }
 
         productVariantRepository.saveAll(variants);
+    }
+
+    public void createAttribute(AttributeRequest request) {
+        Attribute attribute = Attribute.builder()
+                .name(request.name())
+                .dataType(request.dataType())
+                .unit(request.unit())
+                .build();
+        attributeRepository.save(attribute);
     }
 }

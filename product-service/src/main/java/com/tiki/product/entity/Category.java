@@ -26,4 +26,6 @@ public class Category {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", orphanRemoval = true)
     private List<Category> children;
+
+
 }
