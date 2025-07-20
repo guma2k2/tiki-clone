@@ -1,11 +1,10 @@
-package com.tiki.profile.entity;
+package com.tiki.file.entity;
 
+import com.tiki.file.dto.FileType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
-
-import java.time.LocalDate;
 
 @Setter
 @Getter
@@ -13,16 +12,13 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Document("profile")
-public class Profile {
+@Document("files")
+public class Files {
+
     @MongoId
-    String id;
-    String userId;
-    String email;
-    String username;
-    String firstName;
-    String lastName;
-    String avatar;
-    LocalDate dob;
-    String city;
+    private String id;
+    private String url;
+    private boolean status = false;
+    private String duration;
+    private FileType type;
 }
