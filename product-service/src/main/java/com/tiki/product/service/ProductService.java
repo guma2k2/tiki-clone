@@ -3,6 +3,7 @@ package com.tiki.product.service;
 
 import com.tiki.product.dto.request.AttributeRequest;
 import com.tiki.product.dto.request.ProductCreationRequest;
+import com.tiki.product.dto.request.ProductImageCreateType;
 import com.tiki.product.dto.request.ProductVariantCreateRequest;
 import com.tiki.product.entity.*;
 import com.tiki.product.repository.*;
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +35,7 @@ public class ProductService {
     BrandRepository brandRepository;
     AttributeRepository attributeRepository;
     ProductVariantRepository productVariantRepository;
+    private final ProductImageRepository productImageRepository;
 
 
     @PreAuthorize("hasRole('SELLER')")
@@ -111,5 +114,23 @@ public class ProductService {
                 .unit(request.unit())
                 .build();
         attributeRepository.save(attribute);
+    }
+
+    public void createProductImage(ProductImageCreateType productImageCreateType) {
+        Product product = productRepository.findById(productImageCreateType.productId()).orElseThrow();
+        ProductImage productImage = ProductImage.builder()
+                .product(product)
+                .url(productImageCreateType.url())
+                .type(productImageCreateType.type())
+                .sortOrder(productImageCreateType.sortOrder())
+                .status(productImageCreateType.status())
+                .build();
+        Optional<ProductVariant> productVariantOptional = productVariantRepository.findById(productImageCreateType.productVariantId());
+        if (productVariantOptional.isPresent()) {
+            ProductVariant productVariant = productVariantOptional.get();
+            productImage.setProductVariant(productVariant)  ;
+        }
+
+        productImageRepository.save(productImage);
     }
 }
