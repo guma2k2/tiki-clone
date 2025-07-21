@@ -7,7 +7,6 @@ public record ProductImageCreateType(
     ProductImageType type,
     int sortOrder,
     boolean status,
-    Long productId,
     Long productVariantId
 ) {
 }

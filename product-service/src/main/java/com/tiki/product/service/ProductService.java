@@ -5,10 +5,10 @@ import com.tiki.product.dto.request.AttributeRequest;
 import com.tiki.product.dto.request.ProductCreationRequest;
 import com.tiki.product.dto.request.ProductImageCreateType;
 import com.tiki.product.dto.request.ProductVariantCreateRequest;
+import com.tiki.product.dto.response.*;
 import com.tiki.product.entity.*;
 import com.tiki.product.repository.*;
 import com.tiki.product.ultility.SkuGenerator;
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,11 +16,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +33,48 @@ public class ProductService {
     AttributeRepository attributeRepository;
     ProductVariantRepository productVariantRepository;
     private final ProductImageRepository productImageRepository;
+
+    VariantAttributeValueRepository variantAttributeValueRepository;
+
+
+    public ProductResponse getById(Long id) {
+        Product product = productRepository.findByIdCustom(id).orElseThrow();
+
+        CategoryResponse categoryResponse = CategoryResponse.from(product.getCategory());
+        BrandResponse brandResponse = BrandResponse.from(product.getBrand());
+
+
+        // get productVariants
+        List<ProductVariantResponse> productVariants = getProductVariants(product);
+
+
+        // get productImages
+        List<ProductImageResponse> productImages = getProductImages(product);
+
+        return ProductResponse.from(product, brandResponse, categoryResponse, productVariants, productImages);
+    }
+
+    private List<ProductImageResponse> getProductImages(Product product) {
+        List<ProductImageResponse> productImages = productImageRepository.findByProductId(product.getId()).stream()
+                .map(productImage -> ProductImageResponse.from(productImage)).collect(Collectors.toList());
+        return productImages;
+    }
+
+    private List<ProductVariantResponse> getProductVariants(Product product) {
+
+        List<ProductVariantResponse> productVariantResponses = new ArrayList<>();
+        product.getProductVariants().forEach(productVariant -> {
+            List<VariantAttributeValue> variantAttributeValues = variantAttributeValueRepository.findByProductVariant(productVariant.getId());
+            Map<String, String> variantAttributeValueMap = new HashMap<>();
+            variantAttributeValues.forEach(variantAttributeValue -> {
+                variantAttributeValueMap.put(variantAttributeValue.getAttribute().getName(), variantAttributeValue.getValue());
+            });
+            ProductVariantResponse productVariantResponse = ProductVariantResponse.from(productVariant, variantAttributeValueMap);
+            productVariantResponses.add(productVariantResponse);
+        });
+        return productVariantResponses;
+    }
+
 
 
     @PreAuthorize("hasRole('SELLER')")
@@ -70,9 +109,13 @@ public class ProductService {
                     .build();
             productAttributeValueRepository.save(productAttributeValue);
         });
+
+        saveProductVariants(request.productVariants(), product.getId());
+        saveProductImages(request.productImage(), product.getId());
+
     }
 
-    public void createProductVariants(Long productId, List<ProductVariantCreateRequest> requests) {
+    private void saveProductVariants(List<ProductVariantCreateRequest> requests, Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow();
 
@@ -116,21 +159,24 @@ public class ProductService {
         attributeRepository.save(attribute);
     }
 
-    public void createProductImage(ProductImageCreateType productImageCreateType) {
-        Product product = productRepository.findById(productImageCreateType.productId()).orElseThrow();
-        ProductImage productImage = ProductImage.builder()
-                .product(product)
-                .url(productImageCreateType.url())
-                .type(productImageCreateType.type())
-                .sortOrder(productImageCreateType.sortOrder())
-                .status(productImageCreateType.status())
-                .build();
-        Optional<ProductVariant> productVariantOptional = productVariantRepository.findById(productImageCreateType.productVariantId());
-        if (productVariantOptional.isPresent()) {
-            ProductVariant productVariant = productVariantOptional.get();
-            productImage.setProductVariant(productVariant)  ;
+    private void saveProductImages(List<ProductImageCreateType> productImageCreateTypes, Long productId) {
+        Product product = productRepository.findById(productId).orElseThrow();
+        for (ProductImageCreateType productImageCreateType : productImageCreateTypes) {
+            ProductImage productImage = ProductImage.builder()
+                    .product(product)
+                    .url(productImageCreateType.url())
+                    .type(productImageCreateType.type())
+                    .sortOrder(productImageCreateType.sortOrder())
+                    .status(productImageCreateType.status())
+                    .build();
+            Optional<ProductVariant> productVariantOptional = productVariantRepository.findById(productImageCreateType.productVariantId());
+            if (productVariantOptional.isPresent()) {
+                ProductVariant productVariant = productVariantOptional.get();
+                productImage.setProductVariant(productVariant)  ;
+            }
+
+            productImageRepository.save(productImage);
         }
 
-        productImageRepository.save(productImage);
     }
 }

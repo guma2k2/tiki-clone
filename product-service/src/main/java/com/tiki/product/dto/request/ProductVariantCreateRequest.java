@@ -5,6 +5,6 @@ import java.util.Map;
 public record ProductVariantCreateRequest (
         Double price,
         Integer quantity,
-        Map<String, String> attributes // VD:
+        Map<String, String> attributes
 ) {
 }

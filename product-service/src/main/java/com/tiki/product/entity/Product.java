@@ -40,6 +40,9 @@ public class Product {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     private List<ProductAttributeValue> productAttributeValueList = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    private List<ProductVariant> productVariants = new ArrayList<>();
+
     private String sellerId;
 
     private LocalDateTime createdAt;
