@@ -1,6 +1,7 @@
 package com.tiki.product.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tiki.product.dto.ApiResponse;
 import com.tiki.product.exception.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
