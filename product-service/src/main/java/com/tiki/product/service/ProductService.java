@@ -51,7 +51,18 @@ public class ProductService {
         // get productImages
         List<ProductImageResponse> productImages = getProductImages(product);
 
-        return ProductResponse.from(product, brandResponse, categoryResponse, productVariants, productImages);
+        Map<String, String> productAttributeValues = getProductAttributeValues(product);
+
+        return ProductResponse.from(product, brandResponse, categoryResponse, productVariants, productImages, productAttributeValues);
+    }
+
+    private Map<String, String> getProductAttributeValues(Product product) {
+        List<ProductAttributeValue> productAttributeValues = productAttributeValueRepository.findByProduct(product.getId());
+        Map<String, String> variantAttributeValueMap = new HashMap<>();
+        productAttributeValues.forEach(variantAttributeValue -> {
+            variantAttributeValueMap.put(variantAttributeValue.getAttribute().getName(), variantAttributeValue.getValue());
+        });
+        return variantAttributeValueMap;
     }
 
     private List<ProductImageResponse> getProductImages(Product product) {
@@ -61,7 +72,6 @@ public class ProductService {
     }
 
     private List<ProductVariantResponse> getProductVariants(Product product) {
-
         List<ProductVariantResponse> productVariantResponses = new ArrayList<>();
         product.getProductVariants().forEach(productVariant -> {
             List<VariantAttributeValue> variantAttributeValues = variantAttributeValueRepository.findByProductVariant(productVariant.getId());
