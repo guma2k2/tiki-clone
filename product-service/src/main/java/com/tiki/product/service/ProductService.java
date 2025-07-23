@@ -32,8 +32,7 @@ public class ProductService {
     BrandRepository brandRepository;
     AttributeRepository attributeRepository;
     ProductVariantRepository productVariantRepository;
-    private final ProductImageRepository productImageRepository;
-
+    ProductImageRepository productImageRepository;
     VariantAttributeValueRepository variantAttributeValueRepository;
 
 
@@ -84,7 +83,6 @@ public class ProductService {
         });
         return productVariantResponses;
     }
-
 
 
     @PreAuthorize("hasRole('SELLER')")
@@ -182,7 +180,7 @@ public class ProductService {
             Optional<ProductVariant> productVariantOptional = productVariantRepository.findById(productImageCreateType.productVariantId());
             if (productVariantOptional.isPresent()) {
                 ProductVariant productVariant = productVariantOptional.get();
-                productImage.setProductVariant(productVariant)  ;
+                productImage.setProductVariant(productVariant);
             }
 
             productImageRepository.save(productImage);
