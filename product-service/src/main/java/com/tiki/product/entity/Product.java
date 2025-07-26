@@ -26,7 +26,7 @@ public class Product {
     @Column(length = 100, nullable = false, unique = true)
     private String slug;
 
-    @Column(length = 1000)
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)

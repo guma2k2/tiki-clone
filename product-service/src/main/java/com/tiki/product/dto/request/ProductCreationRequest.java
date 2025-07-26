@@ -8,18 +8,17 @@ import java.util.Map;
 public record ProductCreationRequest(
     @NotBlank
     String name,
+
     String description,
 
-    @NotBlank
-    Integer brandId,
+    int brandId,
 
-    @NotBlank
-    Integer categoryId,
+    int categoryId,
 
     Map<Integer, String> attributes,
     List<ProductVariantCreateRequest> productVariants,
 
-    List<ProductImageCreateType> productImage
+    List<ProductImageCreateRequest> productImages
 
 ) {
 }
