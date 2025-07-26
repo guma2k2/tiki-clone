@@ -21,7 +21,7 @@ public class CategoryAttribute {
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "attribute_id")
     private Attribute attribute;
 
     private Boolean isRequired;

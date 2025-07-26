@@ -23,7 +23,7 @@ public class ProductController {
     ProductService productService;
 
 
-    @PostMapping
+    @PostMapping("/create")
     public ApiResponse<Void> createProduct(@RequestBody @Valid ProductCreationRequest request) {
         productService.createProduct(request);
         return ApiResponse.<Void>builder()
@@ -37,7 +37,7 @@ public class ProductController {
     public ApiResponse<ProductResponse> getProduct(@PathVariable Long productId) {
         return ApiResponse.<ProductResponse>builder()
                 .code(1201)
-                .message("Product created")
+                .message("Getted product")
                 .result(productService.getById(productId))
                 .build();
     }

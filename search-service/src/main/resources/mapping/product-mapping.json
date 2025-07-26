@@ -1,0 +1,63 @@
+{
+  "mappings": {
+    "properties": {
+      "sku": {
+        "type": "keyword"
+      },
+      "productId": {
+        "type": "long"
+      },
+      "name": {
+        "type": "text",
+        "fields": {
+          "completion": {
+            "type": "completion"
+          }
+        }
+      },
+      "slug": {
+        "type": "keyword"
+      },
+      "category": {
+        "properties": {
+          "name": {
+            "type": "text"
+          },
+          "id": {
+            "type": "integer"
+          }
+        }
+      },
+      "brand": {
+        "properties": {
+          "name": {
+            "type": "text"
+          },
+          "id": {
+            "type": "integer"
+          }
+        }
+      },
+      "price": {
+        "type": "double"
+      },
+      "image": {
+        "type": "keyword",
+        "index": false
+      },
+      "status": {
+        "type": "keyword"
+      },
+      "attributes": {
+        "type": "object",
+        "enabled": true
+      },
+      "avg_rating": {
+        "type": "float"
+      },
+      "num_of_reviews": {
+        "type": "integer"
+      }
+    }
+  }
+}
