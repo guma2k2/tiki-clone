@@ -48,15 +48,22 @@
       "status": {
         "type": "keyword"
       },
-      "attributes": {
-        "type": "object",
-        "enabled": true
-      },
       "avg_rating": {
         "type": "float"
       },
       "num_of_reviews": {
         "type": "integer"
+      },
+      "attributes": {
+        "type": "nested",
+        "properties": {
+          "name": {
+            "type": "text"
+          },
+          "value": {
+            "type": "text"
+          }
+        }
       }
     }
   }
