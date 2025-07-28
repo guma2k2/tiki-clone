@@ -1,6 +1,10 @@
 package com.tiki.search.entity;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.Mapping;
@@ -9,6 +13,10 @@ import java.util.List;
 
 @Document(indexName = "products")
 @Mapping(mappingPath = "mapping/product-mapping.json")
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product {
 
     private String sku;

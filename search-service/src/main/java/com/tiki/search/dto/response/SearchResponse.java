@@ -6,7 +6,7 @@ import java.util.List;
 
 public record SearchResponse (
         List<ProductResponse> results,
-        List<Facet> facets,
+//        List<Facet> facets,
         Pagination pagination,
         long timeTaken
 ) {
