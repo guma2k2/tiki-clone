@@ -1,0 +1,17 @@
+{
+  "name": "mysql-tiki-product-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+    "database.hostname": "mysql",
+    "database.port": "3306",
+    "database.user": "root",
+    "database.password": "password",
+    "database.server.id": "223344",
+    "database.server.name": "tiki-mysql",
+    "database.include.list": "tiki-product",
+    "table.include.list": "tiki-product.product_variants",
+    "include.schema.changes": "false",
+    "database.history.kafka.bootstrap.servers": "kafka:9092",
+    "database.history.kafka.topic": "schema-changes.tiki-product"
+  }
+}

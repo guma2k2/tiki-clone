@@ -10,10 +10,13 @@ import co.elastic.clients.elasticsearch.core.search.FieldSuggester;
 import co.elastic.clients.elasticsearch.core.search.SuggestFuzziness;
 import co.elastic.clients.elasticsearch.core.search.Suggester;
 
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
+
+import static com.tiki.search.util.Constants.PRODUCTS.ATTRIBUTE_NAME;
+import static com.tiki.search.util.Constants.PRODUCTS.ATTRIBUTE_VALUE;
 
 public class ElasticSearchUtil {
     public static Query buildTermQuery(String field, String value, float boost) {
@@ -51,7 +54,7 @@ public class ElasticSearchUtil {
         return Query.of(builder -> builder.multiMatch(multiMatchQuery));
     }
 
-    public static Query buildNestedFacetQueries(String facetString) {
+    public static Query buildNestedFacetQueries(String field, String facetString) {
         List<Query> nestedFilters = Arrays.stream(facetString.split("\\|\\|"))
                 .filter(pair -> pair.contains(":"))
                 .map(pair -> {
@@ -60,11 +63,11 @@ public class ElasticSearchUtil {
                     String value = parts[1].trim();
 
                     return Query.of(q -> q.nested(n -> n
-                            .path("attributes")
+                            .path(field)
                             .query(nq -> nq.bool(b -> b
                                     .must(List.of(
-                                            Query.of(m1 -> m1.term(t -> t.field("attributes.name.keyword").value(name))),
-                                            Query.of(m2 -> m2.term(t -> t.field("attributes.value.keyword").value(value)))
+                                            Query.of(m1 -> m1.match(t -> t.field(ATTRIBUTE_NAME).query(name))),
+                                            Query.of(m2 -> m2.match(t -> t.field(ATTRIBUTE_VALUE).query(value)))
                                     ))
                             ))
                     ));

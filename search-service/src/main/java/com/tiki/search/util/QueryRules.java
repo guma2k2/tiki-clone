@@ -41,7 +41,7 @@ public class QueryRules {
     );
     public static final QueryRule ATTRIBUTES_QUERY = QueryRule.of(
             sr -> sr.facet() != null && !sr.facet().isBlank(),
-            sr -> buildNestedFacetQueries(sr.facet())
+            sr -> buildNestedFacetQueries(ATTRIBUTES, sr.facet())
     );
 
     private static String boostField(String field, float boost){
