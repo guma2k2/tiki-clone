@@ -1,27 +1,32 @@
 package com.tiki.search.entity;
 
 
+import com.tiki.search.dto.response.ProductVariantResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.Mapping;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
 import java.util.List;
 
 @Document(indexName = "products")
-@Mapping(mappingPath = "mapping/product-mapping.json")
+@Mapping(mappingPath = "es-config/product-mapping.json")
+@Setting(settingPath = "es-config/product-setting.json")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
 
-    private String sku;
+    @Id
+    private Long id;
 
-    private Long productId;
+    private String sku;
 
     private String name;
 
@@ -29,13 +34,14 @@ public class Product {
 
     private String description;
 
-    private Brand brand;
+    private String brand;
 
-    private Category category;
+    private String category;
 
     private Double price;
 
-    private String image;
+    @Field(name = "image_url")
+    private String imageUrl;
 
     private String status;
 
@@ -47,4 +53,29 @@ public class Product {
     @Field(name = "num_of_reviews")
     private Integer reviewsCount;
 
+    public static Product fromProductVariantResponse(ProductVariantResponse response) {
+        Product product = new Product();
+
+        product.setId(response.id());
+        product.setSku(response.sku());
+        product.setName(response.name());
+        product.setSlug(response.slug());
+        product.setDescription(response.description());
+        product.setBrand(response.brand());
+        product.setCategory(response.category());
+        product.setPrice(response.price());
+        product.setImageUrl(response.imageUrl());
+        product.setStatus(response.status());
+        product.setRating(response.rating());
+        product.setReviewsCount(response.reviewsCount());
+
+        if (response.variantAttributeValue() != null) {
+            List<Attribute> attributeList = Attribute.fromAttributeMap(response.variantAttributeValue());
+            product.setAttributes(attributeList);
+        } else {
+            product.setAttributes(List.of()); // or null
+        }
+
+        return product;
+    }
 }

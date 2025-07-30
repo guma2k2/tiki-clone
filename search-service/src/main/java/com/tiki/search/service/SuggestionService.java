@@ -32,7 +32,7 @@ public class SuggestionService {
 
     static String FUZZY_LEVEL = "1";
     static Integer FUZZY_PREFIX_LENGTH = 1;
-    static String SUGGEST_NAME = "search-term-suggest";
+    static String SUGGEST_NAME = "product-suggest";
     static String SEARCH_TERM = "name.completion";
 
     public List<String> fetchSuggestions(SuggestionRequest request) {
