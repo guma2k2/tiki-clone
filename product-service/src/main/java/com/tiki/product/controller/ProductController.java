@@ -3,9 +3,8 @@ package com.tiki.product.controller;
 import com.tiki.product.dto.ApiResponse;
 import com.tiki.product.dto.request.AttributeRequest;
 import com.tiki.product.dto.request.ProductCreationRequest;
-import com.tiki.product.dto.request.ProductVariantCreateRequest;
 import com.tiki.product.dto.response.ProductResponse;
-import com.tiki.product.entity.Product;
+import com.tiki.product.dto.response.ProductVariantResponse;
 import com.tiki.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -42,6 +41,14 @@ public class ProductController {
                 .build();
     }
 
+    @GetMapping("/variants/{id}")
+
+    public ApiResponse<ProductVariantResponse> getProductVariants(@PathVariable Long id) {
+        return ApiResponse.<ProductVariantResponse>builder()
+                .code(1200)
+                .result(productService.getProductVariant(id))
+                .build();
+    }
 
 
     @PostMapping("/attribute")
@@ -52,5 +59,7 @@ public class ProductController {
                 .message("Attribute created")
                 .build();
     }
+
+
 
 }

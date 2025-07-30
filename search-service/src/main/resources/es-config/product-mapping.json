@@ -1,11 +1,10 @@
 {
-  "mappings": {
     "properties": {
+      "id": {
+        "type": "long"
+      },
       "sku": {
         "type": "keyword"
-      },
-      "productId": {
-        "type": "long"
       },
       "name": {
         "type": "text",
@@ -15,33 +14,23 @@
           }
         }
       },
+      "description": {
+        "type": "text",
+        "analyzer": "html_strip_analyzer"
+      },
       "slug": {
         "type": "keyword"
       },
       "category": {
-        "properties": {
-          "name": {
-            "type": "text"
-          },
-          "id": {
-            "type": "integer"
-          }
-        }
+        "type": "text"
       },
       "brand": {
-        "properties": {
-          "name": {
-            "type": "text"
-          },
-          "id": {
-            "type": "integer"
-          }
-        }
+        "type": "text"
       },
       "price": {
         "type": "double"
       },
-      "image": {
+      "image_url": {
         "type": "keyword",
         "index": false
       },
@@ -66,5 +55,4 @@
         }
       }
     }
-  }
 }

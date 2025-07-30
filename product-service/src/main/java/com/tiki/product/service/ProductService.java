@@ -188,4 +188,19 @@ public class ProductService {
            }
        }
     }
+
+    public ProductVariantResponse getProductVariant(Long productVariantId) {
+        ProductVariant productVariant = productVariantRepository.findByIdCustom(productVariantId).orElseThrow();
+
+        Product product = productVariant.getProduct();
+        List<VariantAttributeValue> variantAttributeValues = variantAttributeValueRepository.findByProductVariant(productVariantId);
+        Map<String, String> variantAttributeValueMap = new HashMap<>();
+        variantAttributeValues.forEach(variantAttributeValue -> {
+            variantAttributeValueMap.put(variantAttributeValue.getAttribute().getName(), variantAttributeValue.getValue());
+        });
+        // get image
+        // get rating and review count
+
+        return ProductVariantResponse.from(productVariant, variantAttributeValueMap, product, "", null, 0);
+    }
 }
