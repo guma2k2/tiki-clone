@@ -66,8 +66,8 @@ public class ElasticSearchUtil {
                             .path(field)
                             .query(nq -> nq.bool(b -> b
                                     .must(List.of(
-                                            Query.of(m1 -> m1.match(t -> t.field(ATTRIBUTE_NAME).query(name))),
-                                            Query.of(m2 -> m2.match(t -> t.field(ATTRIBUTE_VALUE).query(value)))
+                                            buildMatchQuery(ATTRIBUTE_NAME, name, 1.0f),
+                                            buildTermQuery(ATTRIBUTE_VALUE, value, 1.0f)
                                     ))
                             ))
                     ));
