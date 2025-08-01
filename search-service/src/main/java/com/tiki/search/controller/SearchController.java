@@ -30,8 +30,8 @@ public class SearchController {
         return ApiResponse.<List<String>>builder().result(suggestionService.fetchSuggestions(parameters)).code(1200).build();
     }
 
-    @GetMapping("/search")
-    public ApiResponse<SearchResponse> search(SearchRequest parameters){
+    @GetMapping("/filter")
+    public ApiResponse<SearchResponse> search(@RequestBody SearchRequest parameters){
         return ApiResponse.<SearchResponse>builder().result(searchService.search(parameters)).code(1200).build();
     }
 
