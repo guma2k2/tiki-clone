@@ -71,7 +71,7 @@ public class Product {
             List<Attribute> attributeList = Attribute.fromAttributeMap(response.variantAttributeValue());
             product.setAttributes(attributeList);
         } else {
-            product.setAttributes(List.of()); // or null
+            product.setAttributes(List.of());
         }
 
         return product;

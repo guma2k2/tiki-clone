@@ -1,5 +1,7 @@
 package com.tiki.order.service;
 
+import com.tiki.order.command.CreateOrderCommand;
+import com.tiki.order.dto.OrderDetailDto;
 import com.tiki.order.dto.request.OrderDetailRequest;
 import com.tiki.order.dto.request.OrderRequest;
 import com.tiki.order.dto.response.*;
@@ -14,12 +16,14 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -28,6 +32,8 @@ public class OrderService {
 
     OrderRepository orderRepository;
     OrderDetailRepository orderDetailRepository;
+
+    CommandGateway commandGateway;
 
     ProductFeignClient productFeignClient;
     CustomerFeignClient customerFeignClient;
@@ -57,6 +63,9 @@ public class OrderService {
             orderDetails.add(orderDetail);
         }
         orderDetailRepository.saveAll(orderDetails);
+
+        List<OrderDetailDto> orderDetailDtos = orderPostDto.orderDetails().stream().map(orderDetailRequest -> new OrderDetailDto(orderDetailRequest)).collect(Collectors.toList());
+        commandGateway.send(new CreateOrderCommand(order, orderDetailDtos));
         return savedOrder.getId();
     }
 
