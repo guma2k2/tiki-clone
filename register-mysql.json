@@ -5,9 +5,10 @@
     "tasks.max": "1",
     "database.hostname": "mysql",
     "database.port": "3306",
-    "database.user": "thuan",
+    "database.user": "root",
     "database.password": "password",
     "database.server.id": "223344",
+    "topic.prefix": "dbproduct",
     "database.include.list": "tiki-product",
     "schema.history.internal.kafka.bootstrap.servers": "kafka:9092",
     "schema.history.internal.kafka.topic": "schema-changes.tiki-product"
