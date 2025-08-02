@@ -1,0 +1,24 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /files
+spring:
+  application:
+    name: file-service
+  data:
+    mongodb:
+      uri: mongodb://root:root@localhost:27017/file-service?authSource=admin
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/tiki
+  cloudinary:
+    name: 'di6h4mtfa'
+    api:
+      key: '593637822396816'
+      secret: 'u3aoCSJzt31lcqOJBsgykwTq81o'
+idp:
+  url: http://localhost:8180
+  client-id: tiki_app
+  client-secret: Y1GleohK65RsIur2eYWCZ9dGNJ8Ta5Rx

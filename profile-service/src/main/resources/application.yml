@@ -1,0 +1,19 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /profiles
+spring:
+  application:
+    name: profile-service
+  data:
+    mongodb:
+      uri: mongodb://root:root@localhost:27017/profile-service?authSource=admin
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/tiki
+idp:
+  url: http://localhost:8180
+  client-id: tiki_app
+  client-secret: UpN6e6X1lzKYrIIYCysdeWGgYVYMun0A
