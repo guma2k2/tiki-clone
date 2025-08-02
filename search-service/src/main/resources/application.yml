@@ -1,0 +1,23 @@
+server:
+  port: 8087
+  servlet:
+    context-path: /search
+spring:
+  application:
+    name: search-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/tiki
+  kafka:
+    bootstrap-servers: localhost:9094
+    consumer:
+      auto-offset-reset: earliest
+      group-id: search-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+idp:
+  url: http://localhost:8180
+  client-id: tiki_app
+  client-secret: Y1GleohK65RsIur2eYWCZ9dGNJ8Ta5Rx

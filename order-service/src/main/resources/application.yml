@@ -1,0 +1,25 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /orders
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/tiki-order
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 'password'
+    jpa:
+      hibernate:
+        ddl-auto: update
+      show-sql: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/tiki
+idp:
+  url: http://localhost:8180
+  client-id: tiki_app
+  client-secret: Y1GleohK65RsIur2eYWCZ9dGNJ8Ta5Rx
