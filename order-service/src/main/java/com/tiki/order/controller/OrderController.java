@@ -2,6 +2,7 @@ package com.tiki.order.controller;
 
 import com.tiki.order.dto.ApiResponse;
 import com.tiki.order.dto.request.OrderRequest;
+import com.tiki.order.dto.request.OrderStatusRequest;
 import com.tiki.order.dto.response.OrderGetListResponse;
 import com.tiki.order.dto.response.OrderResponse;
 import com.tiki.order.dto.response.ProductVariantResponse;
@@ -36,7 +37,7 @@ public class OrderController {
         return ApiResponse.<List<OrderResponse>>builder().result(orderDtos).build();
     }
 
-    @GetMapping("/10-beseller-products")
+    @GetMapping("/beseller-products")
     public ApiResponse<List<ProductVariantResponse>> get10BestSellerProducts() {
         List<ProductVariantResponse> productVariantDtos = orderDetailService.getTopProductBestSeller(10);
         return ApiResponse.<List<ProductVariantResponse>>builder().result(productVariantDtos).build();
@@ -54,7 +55,9 @@ public class OrderController {
     }
 
     @GetMapping("/backoffice/status/{orderStatus}")
-    public ApiResponse<List<OrderGetListResponse>> findAllByStatus(@PathVariable("orderStatus") OrderStatus orderStatus) {
+    public ApiResponse<List<OrderGetListResponse>> findAllByStatus(
+            @PathVariable("orderStatus") OrderStatus orderStatus
+    ) {
         List<OrderGetListResponse> orderDtos = orderService.findAllByStatus(orderStatus);
         return ApiResponse.<List<OrderGetListResponse>>builder().result(orderDtos).build();
 
@@ -78,10 +81,9 @@ public class OrderController {
     }
     @PutMapping("/storefront/{orderId}/status/{orderStatus}")
     public ApiResponse<Void> updateStatusOrderById(
-            @PathVariable("orderId") Long orderId,
-            @PathVariable("orderStatus") OrderStatus orderStatus
-    ) {
-        orderService.updateStatusOrderById(orderId, orderStatus);
-        return ApiResponse.<Void>builder().result(null).build();
+            @RequestBody OrderStatusRequest request
+            ) {
+        orderService.updateStatusOrderById(request);
+        return ApiResponse.<Void>builder().result(null).message("update order status successfully").build();
     }
 }

@@ -1,9 +1,8 @@
 package com.tiki.order.service;
 
-import com.tiki.order.command.CreateOrderCommand;
-import com.tiki.order.dto.OrderDetailDto;
 import com.tiki.order.dto.request.OrderDetailRequest;
 import com.tiki.order.dto.request.OrderRequest;
+import com.tiki.order.dto.request.OrderStatusRequest;
 import com.tiki.order.dto.response.*;
 import com.tiki.order.entity.Order;
 import com.tiki.order.entity.OrderDetail;
@@ -16,7 +15,6 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +31,6 @@ public class OrderService {
     OrderRepository orderRepository;
     OrderDetailRepository orderDetailRepository;
 
-    CommandGateway commandGateway;
 
     ProductFeignClient productFeignClient;
     CustomerFeignClient customerFeignClient;
@@ -64,8 +61,6 @@ public class OrderService {
         }
         orderDetailRepository.saveAll(orderDetails);
 
-        List<OrderDetailDto> orderDetailDtos = orderPostDto.orderDetails().stream().map(orderDetailRequest -> new OrderDetailDto(orderDetailRequest)).collect(Collectors.toList());
-        commandGateway.send(new CreateOrderCommand(order, orderDetailDtos));
         return savedOrder.getId();
     }
 
@@ -128,9 +123,11 @@ public class OrderService {
     }
 
 
-    @Transactional
-    public void updateStatusOrderById(Long orderId, OrderStatus orderStatus) {
-        orderRepository.updateStatusById(orderId, orderStatus);
+    public void updateStatusOrderById(OrderStatusRequest request) {
+        Order order = orderRepository.findById(request.orderId()).orElseThrow();
+        order.setStatus(request.orderStatus());
+        order.setReasonFailed(request.reasonFailed());
+        orderRepository.save(order);
     }
 
 

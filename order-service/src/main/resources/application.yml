@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8084
   servlet:
     context-path: /orders
 spring:
@@ -22,4 +22,4 @@ spring:
 idp:
   url: http://localhost:8180
   client-id: tiki_app
-  client-secret: Y1GleohK65RsIur2eYWCZ9dGNJ8Ta5Rx
+  client-secret: UpN6e6X1lzKYrIIYCysdeWGgYVYMun0A
