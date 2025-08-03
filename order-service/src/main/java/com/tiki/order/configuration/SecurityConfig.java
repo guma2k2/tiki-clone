@@ -17,13 +17,15 @@ public class SecurityConfig {
 
     @NonFinal
     private String[] PUBLIC_ENDPOINTS = {
-            "/register"
+            "/orders/sold-num/product/*",
+            "/orders/beseller-products"
     };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(request ->
-                request.anyRequest().permitAll());
+                request.requestMatchers(PUBLIC_ENDPOINTS)
+                        .permitAll().anyRequest().authenticated());
         http.oauth2ResourceServer(oauth2 -> oauth2.jwt(
                         jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter()))
                 .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
