@@ -38,7 +38,13 @@ spring:
             - Path=${app.api-prefix}/files/**
           filters:
             - StripPrefix=2
-
+springdoc:
+  swagger-ui:
+    urls:
+      - name: Profile Service
+        url: /api/v1/profiles/v3/api-docs
+      - name: Product Service
+        url: /api/v1/products/v3/api-docs
 idp:
   url: http://localhost:8180
   client-id: tiki_app

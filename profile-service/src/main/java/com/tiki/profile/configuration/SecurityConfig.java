@@ -17,7 +17,8 @@ public class SecurityConfig {
 
     @NonFinal
     private String[] PUBLIC_ENDPOINTS = {
-            "/register"
+            "/register",
+            "/v3/api-docs"
     };
 
     @Bean
