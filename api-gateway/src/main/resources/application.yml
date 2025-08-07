@@ -47,6 +47,14 @@ springdoc:
         url: /api/v1/products/v3/api-docs
       - name: Payment Service
         url: /api/v1/payments/v3/api-docs
+      - name: Order Service
+        url: /api/v1/orders/v3/api-docs
+      - name: Cart Service
+        url: /api/v1/carts/v3/api-docs
+      - name: Search Service
+        url: /api/v1/searchs/v3/api-docs
+      - name: File Service
+        url: /api/v1/files/v3/api-docs
 idp:
   url: http://localhost:8180
   client-id: tiki_app
